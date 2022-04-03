@@ -1,91 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>METEOR STORM</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meteor Storm</title>
+    <link href="style.css" rel="stylesheet" />
   </head>
   <body>
     <a href="https://www.starche.org/">
-      <img src="https://www.starche.org/starche.png" width="300" />
+      <img
+        id="logo"
+        src="https://www.starche.org/starche.png"
+        alt="starche.org"
+        height="25"
+      />
     </a>
-    <div style="text-align: center">
-      <h1>METEOR STORM</h1>
-    </div>
-    <div style="background: url(stars.png); width: 640px; margin: auto">
-      <canvas id="gameCanvas" width="640" height="480"></canvas>
+    <div id="title">
+      <h1>Meteor Storm</h1>
+      <canvas id="gameCanvas" width="640" ; height="480"></canvas>
     </div>
     <div style="display: none">
       <img id="rocket" src="biplane.png" />
       <img id="meteor" src="meteor.png" />
     </div>
+    <script src="script.js"></script>
   </body>
-  <script>
-    var ctx = gameCanvas.getContext("2d");
-    var x = [600, 600, 600, 600, 600];
-    var y = [0, 100, 200, 300, 400];
-    var speed = [-1, -2, -0.5, -1.2, -1.8];
-    var rocketY = 200,
-      changeY = 0,
-      score = 0;
-    let up = false,
-      down = false;
-
-    var gameTimer = setInterval(mainloop, 20);
-    function mainloop() {
-      moveMeteors();
-      moveRocket();
-    }
-    function moveMeteors() {
-      console.log("Move");
-      ctx.clearRect(0, 0, 640, 480);
-      for (var n = 0; n < 5; n++) {
-        ctx.drawImage(meteor, x[n], y[n], 80, 80);
-        x[n] += speed[n];
-        checkForHits(n);
-        if (x[n] < -80) {
-          x[n] = 640;
-          y[n] = Math.random() * 400;
-        }
-      }
-    }
-    function moveRocket() {
-      if (changeY > 0 && rocketY < 410) rocketY += changeY;
-      if (changeY < 0 && rocketY > 0) rocketY += changeY;
-      ctx.drawImage(rocket, 0, rocketY, 80, 80);
-      score++;
-      ctx.fillStyle = "yellow";
-      ctx.font = "30px arial";
-      ctx.fillText("score: " + score, 10, 30);
-    }
-    document.onkeydown = keyPressed;
-    function keyPressed(e) {
-      var k = e.keyCode;
-      if (k == 87) {
-        up = true;
-      }
-      if (k == 83) {
-        down = true;
-      }
-
-      changeY = up && down ? 0 : up ? -3 : 3;
-    }
-    document.onkeyup = keyUnPressed;
-    function keyUnPressed(e) {
-      var k = e.keyCode;
-      if (k == 87) {
-        up = false;
-      }
-      if (k == 83) {
-        down = false;
-      }
-      changeY = !up && !down ? 0 : up ? -3 : 3;
-    }
-
-    function checkForHits(n) {
-      if (Math.abs(x[n] < 50) && Math.abs(rocketY - y[n]) < 50) {
-        clearInterval(gameTimer);
-        ctx.font = "80px Arial";
-        ctx.fillText("Game Error", 100, 250);
-      }
-    }
-  </script>
 </html>
